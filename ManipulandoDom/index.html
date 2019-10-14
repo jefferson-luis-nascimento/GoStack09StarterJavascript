@@ -1,0 +1,90 @@
+<html>
+<header>
+  <meta charset="utf-8">
+  <title>Módulo 2</title>
+</header>
+
+<body>
+  <div id="app">
+    <button class="botao">Clique Aqui</button>
+    <div class="box">
+
+    </div>
+
+    <input type="text" name="nome" id="nome">
+    <button class="adicionar">Adicionar Nome</button>
+
+  </div>
+
+  <script>
+    //Exercício 1
+    var btn = document.querySelector('button.botao');
+    
+    var boxElement = document.querySelector('.box');
+    var div = document.querySelector('div#app');
+
+    var btnAdicionar = document.querySelector('button.adicionar');
+    var input = document.querySelector('input#nome');
+
+    btn.onclick = function () {
+      event.defaultPrevented = true;
+      boxElement.style.width = 100;
+      boxElement.style.height = 100;
+      boxElement.style.backgroundColor = '#f00';
+
+      boxElement.style.hover = '#777';
+    };
+
+    boxElement.onmouseover = function () {
+      boxElement.style.backgroundColor = getRandomColor();
+    };
+
+    boxElement.onmouseout = function () {
+      boxElement.style.backgroundColor = '#f00';
+    }
+
+    //Exercício 2
+    function getRandomColor() {
+      var letters = "0123456789ABCDEF";
+      var color = "#";
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    //Exercício 3
+    var nomes = ['Diego', 'Gabriel', 'Lucas'];
+    var ul = document.createElement('ul');
+
+    function mostrarNomes() {
+
+      ul.innerHTML = '';
+
+      for (let nome of nomes) {
+        var li = document.createElement('li');
+        var textElement = document.createTextNode(nome);
+        li.appendChild(textElement);
+        ul.appendChild(li);
+      }
+
+      div.appendChild(ul);
+    }
+    mostrarNomes();
+
+    btnAdicionar.onclick = function () {
+      event.defaultPrevented = true;
+
+      nomes.push(input.value);
+      input.value = '';
+
+      input.focus();
+
+      mostrarNomes();
+
+    }
+    
+  </script>
+</body>
+
+</html>

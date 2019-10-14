@@ -1,0 +1,94 @@
+<html>
+<header>
+  <meta charset="utf-8">
+  <title>Módulo 3</title>
+</header>
+
+<body>
+  <div id="app">
+    <input type="text" name="nome" id="nome">
+    <button>Buscar</button>
+    <p></p>
+    <ul>
+
+    </ul>
+  </div>
+
+  <script>
+    //Exercício 1
+    function checaIdade(idade) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          if (idade >= 18) {
+            resolve();
+          } else {
+            reject();
+          }
+        }, 2000);
+      });
+    }
+
+    checaIdade(12)
+      .then(function () {
+        console.log("Maior que 18");
+      })
+      .catch(function () {
+        console.log("Menor que 18");
+      });
+
+    //Exercício 3
+    var btn = document.querySelector('#app button');
+    var input = document.querySelector('#app input');
+    var ul = document.querySelector('#app ul');
+    var p = document.querySelector('#app p');
+
+    function adicionarItemLista(valor) {
+      var li = document.createElement('li');
+      var text = document.createTextNode(valor);
+      li.appendChild(text);
+      ul.appendChild(li);
+    }
+    
+    function buscarGitHub(nome) {
+      adicionarItemLista('Loading...');
+
+      return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', `http://api.github.com/users/${nome}/repos`);
+        xhr.send(null);
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              resolve(JSON.parse(xhr.responseText));
+            } else {
+              reject('Erro na requisição');
+            }
+          }
+        }
+      });
+    }
+
+    btn.onclick = function() {
+      buscarGitHub(input.value)
+        .then(function(response) {
+          ul.innerHTML = '';
+          p.value = input.value;
+
+          let i = 1;
+
+          for (let repo of response) {
+            adicionarItemLista(`${i} - ${repo.full_name}`);
+
+            i++;
+          }
+        })
+        .catch(function(err) {
+          alert(err);
+        });
+    }
+
+  </script>
+</body>
+
+</html>
